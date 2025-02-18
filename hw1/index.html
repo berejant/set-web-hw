@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button id="fileSelect" type="button">Select video</button>
+    <br />
+    <video id="video" width="600" height="400"></video>
+
+    <script>
+        const video = document.getElementById('video');
+        const fileInput = document.getElementById('file');
+        const fileSelectBtn = document.getElementById('fileSelect');
+
+        const playVideoFile = (file) => {
+            if (file) {
+                video.src = URL.createObjectURL(file);
+                video.play();
+            }
+        }
+
+        const openChooseVideoDialog = async () => {
+            const files = await showOpenFilePicker({
+                id: "videoSelect",
+                startIn: "videos",
+                types: [
+                    {
+                        description: "Video file",
+                        accept: {
+                            'video/*': [
+                                '.mp4',
+                                '.webm',
+                                '.mov',
+                                '.avi',
+                                '.mkv',
+                                '.flv',
+                                '.wmv',
+                                '.m4v'
+                            ],
+                        },
+                    },
+                ],
+                excludeAcceptAllOption: true,
+            });
+
+            playVideoFile(await files[0]?.getFile())
+        }
+
+        fileSelectBtn.addEventListener('click', openChooseVideoDialog)
+    </script>
+</body>
+</html>
